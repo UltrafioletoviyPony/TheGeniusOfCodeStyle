@@ -13,7 +13,7 @@ public class Mover : MonoBehaviour
         _wayPointsTransforms = new Transform[_way.childCount];
 
         for (int i = 0; i < _way.childCount; i++)
-            _wayPointsTransforms[i] = _way.GetChild(i).GetComponent<Transform>();
+            _wayPointsTransforms[i] = _way.GetChild(i).transform;
     }
 
     private void Update()
@@ -31,5 +31,8 @@ public class Mover : MonoBehaviour
 
         if (_currentWayPoint == _wayPointsTransforms.Length)
             _currentWayPoint = 0;
+
+        Vector3 forwardPointPosition = _wayPointsTransforms[_currentWayPoint].transform.position;
+        transform.forward = forwardPointPosition - transform.position;
     }
 }
