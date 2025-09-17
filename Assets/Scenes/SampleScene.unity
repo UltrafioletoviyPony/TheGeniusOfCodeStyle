@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 640631334}
-  _bulletPrefab: {fileID: 3522122950209309799, guid: 30f56b73edf31534d9ca817c6ea2d289, type: 3}
+  _bulletPrefab: {fileID: 3796429903707043263, guid: 30f56b73edf31534d9ca817c6ea2d289, type: 3}
   _velocity: 20
   _timeWaitShooting: 0.5
 --- !u!1 &330585543

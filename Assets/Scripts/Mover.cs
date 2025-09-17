@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class Mover : MonoBehaviour
@@ -6,40 +5,31 @@ public class Mover : MonoBehaviour
     [SerializeField] private Transform _way;
     [SerializeField] private float _speed = 5f;
 
-    private Vector3[] _wayPointPositions;
+    private Transform[] _wayPointsTransforms;
     private int _currentWayPoint = 0;
 
-    Coroutine _coroutine;
-
-    void Start()
+    private void Start()
     {
-        if (_way.childCount > 0)
-        {
-            _wayPointPositions = new Vector3[_way.childCount];
+        _wayPointsTransforms = new Transform[_way.childCount];
 
-            for (int i = 0; i < _way.childCount; i++)
-                _wayPointPositions[i] = _way.GetChild(i).position;
-
-            if (_coroutine != null)
-                StopCoroutine(_coroutine);
-
-            _coroutine = StartCoroutine(Move());
-        }
+        for (int i = 0; i < _way.childCount; i++)
+            _wayPointsTransforms[i] = _way.GetChild(i).GetComponent<Transform>();
     }
 
-    private IEnumerator Move()
+    private void Update()
     {
-        bool isMoving = true;
+        Transform wayPointTransform = _wayPointsTransforms[_currentWayPoint];
+        transform.position = Vector3.MoveTowards(transform.position, wayPointTransform.position, _speed * Time.deltaTime);
 
-        while (isMoving)
-        {
-            if (transform.position == _wayPointPositions[_currentWayPoint])
-                _currentWayPoint = (_currentWayPoint + 1) % _wayPointPositions.Length;
+        if (transform.position == wayPointTransform.position) 
+            UpdateCurrentWayPoint();
+    }
 
-            transform.position = Vector3.MoveTowards(transform.position, _wayPointPositions[_currentWayPoint], _speed * Time.deltaTime);
-            transform.LookAt(_wayPointPositions[_currentWayPoint]);
+    private void UpdateCurrentWayPoint()
+    {
+        _currentWayPoint++;
 
-            yield return null;
-        }
+        if (_currentWayPoint == _wayPointsTransforms.Length)
+            _currentWayPoint = 0;
     }
 }
